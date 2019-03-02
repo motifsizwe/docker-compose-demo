@@ -1,0 +1,33 @@
+version: '3.7'                        # This defines the docker-compose file format version being used with 3 being new. 3.7 being the current version supporting latest docker version
+
+services:                             #Services is where we define our multiple images to pulled/run
+  wordpress:
+    image: wordpress:latest           #Wordpress image to be downloaded
+    depends_on:                       #Used to tell the image to wait for db image before starting up its services
+      - db
+    volumes:
+      - wp_data:/var/www/html         #This hold wordpress data i.e dir where wp data will be mounted in the container
+    ports:                            #Port to be exposed from wp container and mapped to the web browser
+      - 8090:80                       #8090 will map to 80
+    restart: always                   #Used to automatically bring up container during a crash
+    environment:                      #Environment details of the container
+      WORDPRESS_DB_HOST: db:3306      #host is the service  according to docker-compose and port for db is 3306
+      WORDPRESS_DB_NAME: mukuru
+      WORDPRESS_DB_USER: sizwe
+      WORDPRESS_DB_PASSWORD: password
+
+  db:
+    image: mysql:5.7               #db image to be downloaded
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql        #Directory where the volume will mounted in the container
+    environment:               
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: sizwe
+      MYSQL_DATABASE: mukuru
+      MYSQL_PASSWORD: password
+
+volumes:                              #This is used for persistent data and updates on it. They created on physical system but mounted in the container
+  wp_data: {}                         #Holds wordpress data
+  db_data: {}                         #Hold database info
+
