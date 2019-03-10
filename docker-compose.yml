@@ -2,7 +2,7 @@ version: '3.7'                        # This defines the docker-compose file for
 
 services:                             #Services is where we define our multiple images to pulled/run
   wordpress:
-    image: wordpress:latest           #Wordpress image to be downloaded
+    image: motifsizwe/wp-app:wp_mukuru_demo           #Wordpress image to be downloaded
     depends_on:                       #Used to tell the image to wait for db image before starting up its services
       - db
     volumes:
@@ -17,7 +17,7 @@ services:                             #Services is where we define our multiple 
       WORDPRESS_DB_PASSWORD: password
 
   db:
-    image: mysql:5.7               #db image to be downloaded
+    image: motifsizwe/wp-db:db_mukuru_demo              #db image to be downloaded
     restart: always
     volumes:
       - db_data:/var/lib/mysql        #Directory where the volume will mounted in the container
